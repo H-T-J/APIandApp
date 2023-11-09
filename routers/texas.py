@@ -15,7 +15,7 @@ class LastName(BaseModel):
     name: str
     number: int
     rank: int
-    spanish: str | None = None
+    spanish: str | None = "Unknown"
 
 name_list = [
             LastName(name="Smith", number=240599, rank=1),
@@ -48,6 +48,11 @@ async def get_all_names(api_key: str):
         return f"The list of most common last names in Texas is: 1. {res[0]}, 2. {res[1]}, 3. {res[2]}, 4. {res[3]}, 5. {res[4]}"
     return {"msg": "You do not have permission to access this resource."}
 
+
+@texan_router.post("/")
+async def add_new_name(name: LastName):
+    name_list.append(name)
+    return{"msg": "Name Added"}
 
 @texan_router.get("/{student_name}")
 async def get_student_academic_record(student_name: str):
